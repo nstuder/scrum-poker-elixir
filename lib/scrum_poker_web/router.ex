@@ -17,6 +17,9 @@ defmodule ScrumPokerWeb.Router do
   scope "/", ScrumPokerWeb do
     pipe_through :browser
 
+    get "/create", PageController, :create
+    get "/login", PageController, :login
+
     get "/", PageController, :home
   end
 
