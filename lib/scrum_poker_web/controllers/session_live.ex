@@ -3,7 +3,7 @@ defmodule ScrumPokerWeb.SessionLive do
   alias ScrumPokerWeb.PokerSessions.PokerSessions
   require Logger
 
-  @story_points [0, 1, 2, 3, 5, 8, 13, 20, 40, 100]
+  @story_points ["?", "0", "1", "2", "3", "5", "8", "13", "21", "34", "55", "89"]
 
   def mount(%{"id" => id, "name" => name}, _session, socket) do
     if connected?(socket), do: PokerSessions.subscribe(id, self())
@@ -11,10 +11,18 @@ defmodule ScrumPokerWeb.SessionLive do
     {:ok, assign(socket, state: state, story_points: @story_points, sessionId: id, name: name)}
   end
 
-  @spec render(any) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     Logger.info(assigns)
     ~H"""
+    <section class="flex justify-between my-5">
+      <h1 class="text-[2rem] mt-4 font-semibold leading-10 tracking-tighter text-zinc-900">Scrum Poker Session: <%= @sessionId %></h1>
+      <script>
+        function copyLink() {
+            navigator.clipboard.writeText("<%= "/sessions/#{@sessionId}/join" %>");
+        }
+      </script>
+      <button type="button" onclick="copyLink()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Copy Session Link</button>
+    </section>
     <section class="flex justify-center flex-wrap">
     <%= for point <- @story_points do %>
       <div class="m-2">

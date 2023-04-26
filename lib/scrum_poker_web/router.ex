@@ -24,6 +24,7 @@ defmodule ScrumPokerWeb.Router do
 
     live "/session/:id", SessionLive
     get "/session/:id/join", PageController, :join
+    get "/session/:id/join-submit", PageController, :join_submit
   end
 
   # Other scopes may use custom stacks.
