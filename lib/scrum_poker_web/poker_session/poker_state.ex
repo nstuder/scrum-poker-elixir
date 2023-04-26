@@ -26,6 +26,11 @@ defmodule ScrumPokerWeb.PokerSessions.PokerSessions do
     GenServer.cast(pid, {:add_user, user})
   end
 
+  def remove_user(id, user) do
+    pid = Global.whereis_name(id)
+    GenServer.cast(pid, {:remove_user, user})
+  end
+
   def select_point(id, user, value) do
     pid = Global.whereis_name(id)
     GenServer.call(pid, {:select_point, user, value})
@@ -90,6 +95,17 @@ defmodule ScrumPokerWeb.PokerSessions.PokerSessions do
     end)
 
     {:noreply, Map.put(state, :users, [user | users])}
+  end
+
+  def handle_cast({:remove_user, user}, %{users: users, subscribers: subscribers} = state) do
+    element_index = Enum.find_index(users, fn x -> x[:name] == user end)
+    newState = Map.put(state, :users, List.delete_at(users, element_index))
+
+    subscribers |> Enum.each(fn sub ->
+      send(sub, {:state_changed, newState})
+    end)
+
+    {:noreply, newState}
   end
 
   def handle_cast({:subscribe, subscriber}, %{subscribers: subs} = state) do

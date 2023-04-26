@@ -78,12 +78,12 @@ defmodule ScrumPokerWeb.SessionLive do
 
   def handle_info({:state_changed, state}, socket) do
     Logger.info("state changed")
-    IO.inspect(state)
     {:noreply, assign(socket, state: state)}
   end
 
   def terminate(_reason, socket) do
     Logger.info "unsubscribe"
     PokerSessions.unsubscribe(socket.assigns.sessionId, self())
+    PokerSessions.remove_user(socket.assigns.sessionId, socket.assigns.name)
   end
 end
