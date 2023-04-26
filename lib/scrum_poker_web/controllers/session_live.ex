@@ -6,14 +6,12 @@ defmodule ScrumPokerWeb.SessionLive do
   @story_points [0, 1, 2, 3, 5, 8, 13, 20, 40, 100]
 
   def mount(%{"id" => id, "name" => name}, _session, socket) do
-    #_pid = PokerSessions.start_link(id)
-    PokerSessions.subscribe(id, self())
+    if connected?(socket), do: PokerSessions.subscribe(id, self())
     state = PokerSessions.get_state(id)
-    IO.puts("Mount State:")
-    IO.inspect(state)
     {:ok, assign(socket, state: state, story_points: @story_points, sessionId: id, name: name)}
   end
 
+  @spec render(any) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     Logger.info(assigns)
     ~H"""
@@ -74,5 +72,10 @@ defmodule ScrumPokerWeb.SessionLive do
     Logger.info("state changed")
     IO.inspect(state)
     {:noreply, assign(socket, state: state)}
+  end
+
+  def terminate(_reason, socket) do
+    Logger.info "unsubscribe"
+    PokerSessions.unsubscribe(socket.assigns.sessionId, self())
   end
 end

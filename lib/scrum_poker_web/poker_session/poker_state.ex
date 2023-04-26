@@ -14,42 +14,38 @@ defmodule ScrumPokerWeb.PokerSessions.PokerSessions do
     GenServer.cast(pid, {:subscribe, subscriber})
   end
 
+  def unsubscribe(id, subscriber) do
+    pid = Global.whereis_name(id)
+    GenServer.cast(pid, {:unsubscribe, subscriber})
+  end
+
   def init(state), do: {:ok, state}
 
   def add_user(id, user) do
     pid = Global.whereis_name(id)
-    ret = GenServer.cast(pid, {:add_user, user})
-    IO.inspect ret
-    ret
+    GenServer.cast(pid, {:add_user, user})
   end
 
   def select_point(id, user, value) do
     pid = Global.whereis_name(id)
-    ret = GenServer.call(pid, {:select_point, user, value})
-    IO.inspect ret
-    ret
+    GenServer.call(pid, {:select_point, user, value})
   end
 
   def view(id) do
     pid = Global.whereis_name(id)
-    ret = GenServer.call(pid, :view)
-    IO.inspect ret
-    ret
+    GenServer.call(pid, :view)
   end
 
   def reset(id) do
     pid = Global.whereis_name(id)
-    ret = GenServer.call(pid, :reset)
-    IO.inspect ret
-    ret
+    GenServer.call(pid, :reset)
   end
 
   def get_state(id) do
     pid = Global.whereis_name(id)
-    ret = GenServer.call(pid, :get_state)
-    IO.inspect ret
-    ret
+    GenServer.call(pid, :get_state)
   end
+
 
   def handle_call(:get_state, _from, state) do
     {:reply, state, state}
@@ -98,6 +94,10 @@ defmodule ScrumPokerWeb.PokerSessions.PokerSessions do
 
   def handle_cast({:subscribe, subscriber}, %{subscribers: subs} = state) do
     {:noreply, Map.put(state, :subscribers , [subscriber | subs])}
+  end
+
+  def handle_cast({:unsubscribe, subscriber}, %{subscribers: subs} = state) do
+    {:noreply, Map.put(state, :subscribers , List.delete(subs, subscriber))}
   end
 
 end

@@ -1,7 +1,6 @@
 defmodule ScrumPokerWeb.PageController do
   use ScrumPokerWeb, :controller
   require Logger
-  import ScrumPokerWeb.PokerSessions.PokerSessions
   alias ScrumPokerWeb.PokerSessions.PokerSessions
 
 
