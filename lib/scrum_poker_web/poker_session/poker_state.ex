@@ -75,8 +75,10 @@ defmodule ScrumPokerWeb.PokerSessions.PokerSessions do
     {:reply, newState, newState}
   end
 
-  def handle_call({:select_point, _user, value}, _from, %{subscribers: subscribers, users: users} = state) do
-    newUsers = users |> Enum.map(fn %{name: name} -> %{name: name, selected: value} end)
+  def handle_call({:select_point, user, value}, _from, %{subscribers: subscribers, users: users} = state) do
+    newUsers = users
+      |> Enum.map(fn x -> if x[:name] == user, do: Map.put(x, :selected, value), else: x end)
+
     newState = state |> Map.put(:users, newUsers)
 
     subscribers |> Enum.each(fn sub ->
