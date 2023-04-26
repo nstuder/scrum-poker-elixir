@@ -15,11 +15,11 @@ defmodule ScrumPokerWeb.PageController do
     redirect(conn, to: "/session/#{session_id}/join")
   end
 
-  def create(conn, _params) do
+  def create(conn, %{"name" => name}) do
     Logger.info("create new Session")
-    id = "abcdefg"
-    PokerSessions.start_link(id)
-    redirect(conn, to: "/session/#{id}?name=Niklas")
+    id = UUID.uuid1()
+    PokerSessions.start_link(id, name)
+    redirect(conn, to: "/session/#{id}?name=#{name}")
   end
 
   def join(conn, _) do

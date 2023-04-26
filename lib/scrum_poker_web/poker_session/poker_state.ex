@@ -2,10 +2,14 @@ defmodule ScrumPokerWeb.PokerSessions.PokerSessions do
   use GenServer
   alias :global, as: Global
 
-  def start_link(name) do
-    case GenServer.start_link(__MODULE__, %{users: [%{name: "Niklas", selected: ""}], show: false, subscribers: []}, name: {:global, name}) do
-      {:ok, pid} -> pid
-      {:error, {:already_started, pid}} -> pid
+  def start_link(id, name) do
+    case GenServer.start_link(__MODULE__, %{
+      users: [%{name: name, selected: ""}],
+      show: false,
+      subscribers: []},
+      name: {:global, id}) do
+        {:ok, pid} -> pid
+        {:error, {:already_started, pid}} -> pid
     end
   end
 
@@ -99,13 +103,18 @@ defmodule ScrumPokerWeb.PokerSessions.PokerSessions do
 
   def handle_cast({:remove_user, user}, %{users: users, subscribers: subscribers} = state) do
     element_index = Enum.find_index(users, fn x -> x[:name] == user end)
-    newState = Map.put(state, :users, List.delete_at(users, element_index))
+    newUsers = List.delete_at(users, element_index)
 
-    subscribers |> Enum.each(fn sub ->
-      send(sub, {:state_changed, newState})
-    end)
+    if newUsers != [] do
+      newState = Map.put(state, :users, newUsers)
+      subscribers |> Enum.each(fn sub ->
+        send(sub, {:state_changed, newState})
+      end)
 
-    {:noreply, newState}
+      {:noreply, newState}
+    else
+      {:stop, :shutdown, state}
+    end
   end
 
   def handle_cast({:subscribe, subscriber}, %{subscribers: subs} = state) do

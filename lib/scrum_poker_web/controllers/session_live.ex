@@ -18,7 +18,7 @@ defmodule ScrumPokerWeb.SessionLive do
       <h1 class="text-[2rem] mt-4 font-semibold leading-10 tracking-tighter text-zinc-900">Scrum Poker Session: <%= @sessionId %></h1>
       <script>
         function copyLink() {
-            navigator.clipboard.writeText("<%= "/sessions/#{@sessionId}/join" %>");
+            navigator.clipboard.writeText("<%= "/session/#{@sessionId}/join" %>");
         }
       </script>
       <button type="button" onclick="copyLink()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Copy Session Link</button>
@@ -34,23 +34,23 @@ defmodule ScrumPokerWeb.SessionLive do
       </div>
     <% end %>
     </section>
-    <section class="container mx-auto my-5">
+    <section class="sm:container mx-auto my-5">
       <div class="flex justify-between my-5">
         <button phx-click="reset" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Reset</button>
         <button phx-click="view" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View</button>
       </div>
-      <table class="w-full border">
+      <table class="w-full table-auto">
         <thead>
-          <th>Name</th>
-          <th>Story Points</th>
+          <th class="border">Name</th>
+          <th class="border">Story Points</th>
         </thead>
         <tbody>
         <%= for user <- @state.users do %>
           <tr class="mt-2">
-            <td class="p-2">
+            <td class="p-2 text-center border font-semibold">
               <%= user.name %>
             </td>
-            <td class="p-2">
+            <td class="p-2 text-center border">
             <%= if @state.show do %>
               <%= user.selected %>
             <% end %>

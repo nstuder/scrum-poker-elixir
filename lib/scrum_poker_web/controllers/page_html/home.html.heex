@@ -7,22 +7,29 @@
         fill="#FD4F00"
       />
     </svg>
-    <h1 class="text-[2rem] mt-4 font-semibold leading-10 tracking-tighter text-zinc-900">Create Session</h1>
 
-    <form action="/create">
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Create</button>
-    </form>
-    <h1 class="text-[2rem] mt-4 font-semibold leading-10 tracking-tighter text-zinc-900">Login existing Session</h1>
-    <form class="mt-5" action="/login">
-      <input id="sessionId" name="sessionId" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" />
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Login</button>
+    <h2 class="text-[2rem] mt-4 font-semibold leading-10 tracking-tighter text-zinc-900">Create Session</h2>
+    <form class="my-5" action="/create">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+        Username
+      </label>
+      <input id="name" name="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" required/>
+      <button class="mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Create</button>
     </form>
 
-    <p class="mt-4 text-base leading-7 text-zinc-600">
-      Build rich, interactive web applications quickly, with less code and fewer moving parts. Join our growing community of developers using Phoenix to craft APIs, HTML5 apps and more, for fun or at scale.
+    <h2 class="text-[2rem] mt-4 font-semibold leading-10 tracking-tighter text-zinc-900">Login existing Session</h2>
+    <form class="my-5" action="/login">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+        Session ID
+      </label>
+      <input id="sessionId" name="sessionId" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" required/>
+      <button class="mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Login</button>
+    </form>
+
+    <p class="mt-5 text-base leading-7 text-zinc-600">
+      Build with:
     </p>
-
-    <p class="text-brand mt-10 flex items-center text-sm font-semibold leading-6">
+    <p class="text-brand flex items-center text-sm font-semibold leading-6">
       Phoenix Framework
       <small class="bg-brand/5 text-[0.8125rem] ml-3 rounded-full px-2 font-medium leading-6">
         v<%= Application.spec(:phoenix, :vsn) %>
