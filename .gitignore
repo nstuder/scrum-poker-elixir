@@ -35,3 +35,7 @@ scrum_poker-*.tar
 npm-debug.log
 /assets/node_modules/
 
+
+.idea/
+
+scrum_poker.iml

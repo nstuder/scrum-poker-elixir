@@ -18,7 +18,8 @@ defmodule ScrumPokerWeb.SessionLive do
       <h1 class="text-[2rem] mt-4 font-semibold leading-10 tracking-tighter text-zinc-900">Scrum Poker Session: <%= @sessionId %></h1>
       <script>
         function copyLink() {
-            navigator.clipboard.writeText("<%= "/session/#{@sessionId}/join" %>");
+            var host = window.location.protocol + "//" + window.location.host;
+            navigator.clipboard.writeText(host + "<%= "/session/#{@sessionId}/join" %>");
         }
       </script>
       <button type="button" onclick="copyLink()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Copy Session Link</button>
